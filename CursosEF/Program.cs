@@ -53,22 +53,29 @@ namespace CursosEF
                 //lo de abajo que comento es lo mismo
             //curso.Profesor1!=null?curso.Profesor1.nombre:"Sin profesor");
 
+
+            var cursos = GetByIdProfesor(1);
+            
             Console.ReadLine();
 
         
         
         }
 
-        public IEnumerable<Curso> GetIdProfesor(int id)
+        public IEnumerable<Curso> GetByIdProfesor(int id)
         {
 
             var datos = db.Curso.Where(o => o.profesor == id).OrderBy(o => o.nombre);
             //por cada elemento que hay dentro va a buscar alguno en el que el campo profesor sea igual que id    
+            
+            
             /* var datos=from o in db.Curso
                       where  o.profesor == id
                       orderby o.nombre
                       select o;*/
 
+
+            //las dos formas anteriores devuelven lo mismo un tipo de objeto Iqueryable que es hijo de IEnumerable y permite mantener abierta la comunicación con la DB
             return datos;
 
         }
