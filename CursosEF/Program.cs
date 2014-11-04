@@ -31,7 +31,7 @@ namespace CursosEF
             //db.SaveChanges();
 
 
-            //oreach (var curso in db.Curso)
+            //foreach (var curso in db.Curso)
             //{
             //  Console.WriteLine("curso: {0} empieza el {1:d} y lo imparte {2}", 
             //curso.nombre,curso.inicio,curso.profesor.HasValue?curso.Profesor1.nombre:"Sin profesor");//lo de abajo que comento es lo mismo
@@ -46,8 +46,8 @@ namespace CursosEF
             // db.SaveChanges();
 
 
-            var curso = db.Curso.Find(2); //el Find busca por clave primaria
-
+            var curso = db.Curso.Find(2); //el Find busca por clave primariaIMPORTANTE; SOLO BUSCA X CLAVE PRIMARIA; SINO USAR LINQ
+           // db.Curso.Remove(db.Curso.Find(2));
             Console.WriteLine("curso: {0} empieza el {1:d} y lo imparte {2}",
                 curso.nombre, curso.inicio, curso.profesor.HasValue ? curso.Profesor1.nombre : "Sin profesor");
                 //lo de abajo que comento es lo mismo
@@ -55,14 +55,14 @@ namespace CursosEF
 
 
             var cursos = GetByIdProfesor(1);
-            
+          //  db.Curso.RemoveRange(GetByIdProfesor(2));
             Console.ReadLine();
 
         
         
         }
 
-        public IEnumerable<Curso> GetByIdProfesor(int id)
+        public static IEnumerable<Curso> GetByIdProfesor(int id)
         {
 
             var datos = db.Curso.Where(o => o.profesor == id).OrderBy(o => o.nombre);
@@ -76,6 +76,22 @@ namespace CursosEF
 
 
             //las dos formas anteriores devuelven lo mismo un tipo de objeto Iqueryable que es hijo de IEnumerable y permite mantener abierta la comunicación con la DB
+            return datos;
+
+        }
+
+        public static IEnumerable<dynamic> GetByIdProfesorDinamico(int id)
+        {
+
+            var datos = from o in db.Curso
+                where o.profesor == id
+                orderby o.nombre
+                select new
+                {
+                    curso = o.nombre,
+                    duracion = o.duracion
+                };
+         
             return datos;
 
         }
